@@ -1,0 +1,1226 @@
+/* =========================================================
+   NAVBAR - TRUVISH OPS
+========================================================= */
+
+.navbar {
+    width: 100%;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 20px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e2e8e8;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Inter,
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+
+    flex-shrink: 0;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   LEFT
+========================================================= */
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    min-width: 0;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   MENU
+========================================================= */
+
+.navbar-menu-btn {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    margin: 0;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #66777a;
+
+    cursor: pointer;
+
+    flex-shrink: 0;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
+
+    outline: none;
+}
+
+.navbar-menu-btn:hover {
+    background: #f4f6f6;
+    color: #0d2c33;
+}
+
+.navbar-menu-btn:active {
+    transform: scale(0.96);
+}
+
+.navbar-menu-btn svg {
+    width: 21px;
+    height: 21px;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 0;
+
+    flex-shrink: 0;
+}
+
+.navbar-logo-image {
+    width: 30px;
+    height: 30px;
+
+    display: block;
+
+    object-fit: contain;
+
+    object-position: center;
+
+    flex-shrink: 0;
+}
+
+.navbar-brand-name {
+    color: #0d2c33;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   SEARCH WRAPPER
+========================================================= */
+
+.navbar-search-wrapper {
+    position: relative;
+
+    width: 100%;
+
+    max-width: 620px;
+
+    margin-left: clamp(24px, 4vw, 64px);
+
+    margin-right: 24px;
+
+    flex: 1;
+
+    min-width: 180px;
+
+    z-index: 2000;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SEARCH BOX
+========================================================= */
+
+.navbar-search {
+    width: 100%;
+
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    position: relative;
+
+    padding: 0 10px 0 12px;
+
+    background: #f8fafa;
+
+    border: 1px solid #e2e8e8;
+
+    border-radius: 9px;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.navbar-search:focus-within {
+    background: #ffffff;
+
+    border-color: #11b6a3;
+
+    box-shadow:
+        0 0 0 3px rgba(17, 182, 163, 0.10),
+        0 2px 6px rgba(17, 182, 163, 0.08);
+}
+
+
+/* =========================================================
+   SEARCH ICON
+========================================================= */
+
+.navbar-search-icon {
+    width: 18px;
+    height: 18px;
+
+    flex-shrink: 0;
+
+    color: #7b8b8d;
+
+    margin-right: 8px;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.navbar-search-input {
+    width: 100%;
+
+    height: 100%;
+
+    padding: 0;
+    margin: 0;
+
+    border: none !important;
+
+    outline: none !important;
+
+    background: transparent !important;
+
+    color: #172a2d;
+
+    font-size: 13px;
+
+    font-weight: 400;
+
+    min-width: 0;
+
+    box-shadow: none !important;
+}
+
+.navbar-search-input:focus,
+.navbar-search-input:focus-visible {
+    outline: none !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+}
+
+.navbar-search-input::placeholder {
+    color: #94a3a5;
+
+    opacity: 1;
+}
+
+.navbar-search-input::-webkit-search-cancel-button {
+    display: none;
+}
+
+
+/* =========================================================
+   CLEAR BUTTON
+========================================================= */
+
+.navbar-search-clear {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    margin: 0 0 0 4px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: #94a3a5;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.navbar-search-clear:hover {
+    background: #eef3f3;
+
+    color: #0d2c33;
+}
+
+.navbar-search-clear:active {
+    transform: scale(0.95);
+}
+
+.navbar-search-clear svg {
+    width: 17px;
+    height: 17px;
+}
+
+
+/* =========================================================
+   CLIENT DROPDOWN
+========================================================= */
+
+.navbar-client-dropdown {
+    position: absolute;
+
+    top: calc(100% + 7px);
+
+    left: 0;
+    right: 0;
+
+    width: 100%;
+
+    max-height: 420px;
+
+    overflow-y: auto;
+
+    padding: 6px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8e8;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 12px 35px rgba(15, 45, 50, 0.14),
+        0 3px 10px rgba(15, 45, 50, 0.06);
+
+    z-index: 5000;
+
+    animation: navbarDropdownIn 0.15s ease;
+}
+
+
+@keyframes navbarDropdownIn {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   CLIENT RESULT
+========================================================= */
+
+.navbar-client-result {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 10px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        background 0.15s ease,
+        transform 0.1s ease;
+}
+
+.navbar-client-result:hover {
+    background: #f4f8f8;
+}
+
+.navbar-client-result:active {
+    transform: scale(0.995);
+}
+
+.navbar-client-result.selected {
+    background: #edf9f7;
+}
+
+
+/* =========================================================
+   CLIENT AVATAR
+========================================================= */
+
+.navbar-client-avatar {
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #e5f6f3;
+
+    color: #0d8c7e;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CLIENT INFO
+========================================================= */
+
+.navbar-client-result-info {
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.navbar-client-result-name {
+    display: block;
+
+    color: #172a2d;
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.navbar-client-result-meta {
+    display: block;
+
+    color: #7a898b;
+
+    font-size: 11px;
+
+    font-weight: 400;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   SELECTED
+========================================================= */
+
+.navbar-client-selected {
+    flex-shrink: 0;
+
+    padding: 4px 7px;
+
+    border-radius: 6px;
+
+    background: #dff6f1;
+
+    color: #087c70;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.navbar-client-empty {
+    min-height: 100px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    color: #94a3a5;
+
+    font-size: 12px;
+}
+
+.navbar-client-empty svg {
+    width: 22px;
+    height: 22px;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.navbar-client-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.navbar-client-dropdown::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.navbar-client-dropdown::-webkit-scrollbar-thumb {
+    background: #d2dddd;
+
+    border-radius: 10px;
+}
+
+.navbar-client-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #b7c5c6;
+}
+
+
+/* =========================================================
+   RIGHT
+========================================================= */
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-left: auto;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+.navbar-icon-btn {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    padding: 0;
+    margin: 0;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #66777a;
+
+    cursor: pointer;
+
+    flex-shrink: 0;
+
+    outline: none;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.navbar-icon-btn:hover {
+    background: #f4f6f6;
+
+    color: #0d2c33;
+}
+
+.navbar-icon-btn:active {
+    transform: scale(0.96);
+}
+
+.navbar-icon-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+
+/* =========================================================
+   NOTIFICATION DOT
+========================================================= */
+
+.navbar-notification-dot {
+    position: absolute;
+
+    top: 7px;
+
+    right: 8px;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #11b6a3;
+
+    border: 2px solid #ffffff;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.navbar-profile {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 4px 8px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: inherit;
+
+    cursor: pointer;
+
+    min-width: 0;
+
+    outline: none;
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+.navbar-profile:hover {
+    background: #f4f6f6;
+}
+
+.navbar-profile:active {
+    transform: scale(0.98);
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+.navbar-avatar {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        #11b6a3,
+        #0d8c7e
+    );
+
+    color: #ffffff;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   USER
+========================================================= */
+
+.navbar-user-info {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    min-width: 0;
+
+    line-height: 1.25;
+}
+
+.navbar-user-name {
+    display: block;
+
+    max-width: 160px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    color: #172a2d;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.navbar-user-role {
+    display: block;
+
+    max-width: 160px;
+
+    margin-top: 2px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    color: #66777a;
+
+    font-size: 11px;
+
+    font-weight: 400;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   CHEVRON
+========================================================= */
+
+.navbar-chevron {
+    width: 15px;
+    height: 15px;
+
+    flex-shrink: 0;
+
+    color: #66777a;
+
+    transition: transform 0.2s ease;
+}
+
+.navbar-profile:hover .navbar-chevron {
+    transform: translateY(1px);
+}
+
+
+/* =========================================================
+   FOCUS
+========================================================= */
+
+.navbar-menu-btn:focus-visible,
+.navbar-icon-btn:focus-visible,
+.navbar-profile:focus-visible,
+.navbar-search-clear:focus-visible {
+    outline: 2px solid #11b6a3;
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   1440+
+========================================================= */
+
+@media (min-width: 1440px) {
+
+    .navbar {
+        padding: 0 28px;
+    }
+
+    .navbar-left {
+        gap: 16px;
+    }
+
+    .navbar-search-wrapper {
+        max-width: 720px;
+
+        margin-left: 70px;
+
+        margin-right: 32px;
+    }
+
+    .navbar-right {
+        gap: 14px;
+    }
+
+}
+
+
+/* =========================================================
+   1200
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .navbar-search-wrapper {
+        max-width: 500px;
+
+        margin-left: 30px;
+
+        margin-right: 18px;
+    }
+
+}
+
+
+/* =========================================================
+   900
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .navbar {
+        padding: 0 16px;
+    }
+
+    .navbar-search-wrapper {
+        max-width: none;
+
+        margin-left: 20px;
+
+        margin-right: 14px;
+    }
+
+    .navbar-user-info {
+        display: none;
+    }
+
+    .navbar-profile {
+        padding: 3px;
+    }
+
+    .navbar-chevron {
+        display: none;
+    }
+
+    .navbar-right {
+        gap: 8px;
+    }
+
+}
+
+
+/* =========================================================
+   768
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .navbar {
+        padding: 0 14px;
+    }
+
+    .navbar-left {
+        gap: 10px;
+    }
+
+    .navbar-brand {
+        gap: 9px;
+    }
+
+    .navbar-brand-name {
+        font-size: 15px;
+    }
+
+    .navbar-search-wrapper {
+        margin-left: 16px;
+
+        margin-right: 10px;
+    }
+
+    .navbar-search {
+        height: 37px;
+    }
+
+    .navbar-search-input {
+        font-size: 12px;
+    }
+
+    .navbar-search-icon {
+        width: 17px;
+
+        height: 17px;
+    }
+
+}
+
+
+/* =========================================================
+   600
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        height: 58px;
+
+        padding: 0 12px;
+    }
+
+    .navbar-logo-image {
+        width: 29px;
+
+        height: 29px;
+    }
+
+    .navbar-brand-name {
+        font-size: 14px;
+    }
+
+    .navbar-menu-btn {
+        width: 35px;
+
+        height: 35px;
+    }
+
+
+    /*
+     * Mobile par search icon rahega.
+     */
+
+    .navbar-search-wrapper {
+        width: 38px;
+
+        min-width: 38px;
+
+        max-width: 38px;
+
+        margin-left: auto;
+
+        margin-right: 4px;
+    }
+
+    .navbar-search {
+        width: 38px;
+
+        height: 38px;
+
+        padding: 0;
+
+        justify-content: center;
+
+        background: transparent;
+
+        border-color: transparent;
+    }
+
+    .navbar-search:hover {
+        background: #f4f6f6;
+    }
+
+    .navbar-search:focus-within {
+        background: #f4f6f6;
+
+        border-color: transparent;
+
+        box-shadow: none;
+    }
+
+    .navbar-search-icon {
+        width: 20px;
+
+        height: 20px;
+
+        margin: 0;
+    }
+
+    .navbar-search-input {
+        display: none;
+    }
+
+
+    /*
+     * Mobile dropdown.
+     */
+
+    .navbar-client-dropdown {
+        position: fixed;
+
+        top: 58px;
+
+        left: 10px;
+
+        right: 10px;
+
+        width: auto;
+
+        max-height: calc(100vh - 75px);
+    }
+
+
+    .navbar-icon-btn {
+        width: 36px;
+
+        height: 36px;
+    }
+
+    .navbar-right {
+        gap: 5px;
+    }
+
+}
+
+
+/* =========================================================
+   480
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .navbar {
+        height: 56px;
+
+        padding: 0 10px;
+    }
+
+    .navbar-left {
+        gap: 8px;
+    }
+
+    .navbar-brand {
+        gap: 7px;
+    }
+
+    .navbar-menu-btn {
+        width: 34px;
+
+        height: 34px;
+    }
+
+    .navbar-logo-image {
+        width: 28px;
+
+        height: 28px;
+    }
+
+    .navbar-brand-name {
+        font-size: 14px;
+    }
+
+    .navbar-avatar {
+        width: 30px;
+
+        height: 30px;
+
+        font-size: 11px;
+    }
+
+    .navbar-search-wrapper {
+        width: 34px;
+
+        min-width: 34px;
+
+        max-width: 34px;
+    }
+
+    .navbar-search {
+        width: 34px;
+
+        height: 34px;
+    }
+
+    .navbar-search-icon {
+        width: 19px;
+
+        height: 19px;
+    }
+
+    .navbar-icon-btn {
+        width: 34px;
+
+        height: 34px;
+    }
+
+    .navbar-icon-btn svg {
+        width: 19px;
+
+        height: 19px;
+    }
+
+    .navbar-notification-dot {
+        top: 6px;
+
+        right: 6px;
+
+        width: 7px;
+
+        height: 7px;
+    }
+
+    .navbar-right {
+        gap: 3px;
+    }
+
+    .navbar-profile {
+        padding: 2px;
+    }
+
+    .navbar-client-dropdown {
+        top: 56px;
+
+        left: 8px;
+
+        right: 8px;
+    }
+
+}
+
+
+/* =========================================================
+   390
+========================================================= */
+
+@media (max-width: 390px) {
+
+    .navbar-brand-name {
+        display: none;
+    }
+
+    .navbar-search-wrapper {
+        margin-right: 1px;
+    }
+
+}
+
+
+/* =========================================================
+   360
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .navbar {
+        padding: 0 8px;
+    }
+
+    .navbar-left {
+        gap: 7px;
+    }
+
+    .navbar-right {
+        gap: 2px;
+    }
+
+    .navbar-search-wrapper {
+        width: 32px;
+
+        min-width: 32px;
+
+        max-width: 32px;
+    }
+
+    .navbar-search {
+        width: 32px;
+
+        height: 32px;
+    }
+
+}

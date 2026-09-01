@@ -1,0 +1,187 @@
+/* =========================================================
+   Button – Reusable Button Component
+   Matches all HTML button styles.
+========================================================= */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: inherit;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    box-sizing: border-box;
+    line-height: 1;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ─── SIZES ──────────────────────────────────────────────── */
+
+.btn-sm {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 12px;
+}
+
+.btn-md {
+    height: 38px;
+    padding: 0 16px;
+    font-size: 13px;
+}
+
+.btn-lg {
+    height: 44px;
+    padding: 0 20px;
+    font-size: 14px;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* ─── VARIANTS ───────────────────────────────────────────── */
+
+/* Primary – solid teal */
+.btn-primary {
+    background: #11b6a3;
+    color: #ffffff;
+}
+.btn-primary:hover:not(:disabled) {
+    background: #0d8c7e;
+}
+.btn-primary:focus-visible {
+    outline: 2px solid #11b6a3;
+    outline-offset: 2px;
+}
+
+/* Outlined – teal border & text */
+.btn-outlined {
+    background: #ffffff;
+    color: #11b6a3;
+    border: 1.5px solid #11b6a3;
+}
+.btn-outlined:hover:not(:disabled) {
+    background: #eef7f6;
+}
+.btn-outlined:focus-visible {
+    outline: 2px solid #11b6a3;
+    outline-offset: 1px;
+}
+
+/* Cancel – white with gray border */
+.btn-cancel {
+    background: #ffffff;
+    color: #172a2d;
+    border: 1.5px solid #d1d5db;
+}
+.btn-cancel:hover:not(:disabled) {
+    background: #f9fafb;
+    border-color: #bdc3c7;
+}
+.btn-cancel:focus-visible {
+    outline: 2px solid #66777a;
+    outline-offset: 1px;
+}
+
+/* Ghost – text only (like "Add Denomination") */
+.btn-ghost {
+    background: transparent;
+    color: #11b6a3;
+    padding: 0;
+    height: auto;
+    border-radius: 0;
+}
+.btn-ghost:hover:not(:disabled) {
+    color: #0d8c7e;
+}
+.btn-ghost:focus-visible {
+    outline: 2px solid #11b6a3;
+    outline-offset: 2px;
+}
+
+/* Danger – used for delete/icon buttons */
+.btn-danger {
+    background: #ffffff;
+    color: #66777a;
+    border: 1px solid #e2e8e8;
+    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-danger:hover:not(:disabled) {
+    background: #fdecec;
+    color: #b23838;
+    border-color: #f5c2c2;
+}
+.btn-danger:focus-visible {
+    outline: 2px solid #e45b5b;
+    outline-offset: 1px;
+}
+
+/* ─── ICON SUPPORT ────────────────────────────────────────── */
+
+.btn-with-icon {
+    gap: 6px;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 0;
+}
+
+.btn-icon svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+
+/* Icon-only buttons (like danger) already have no label */
+.btn-danger .btn-icon {
+    margin: 0;
+}
+
+.btn-danger .btn-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* ─── RESPONSIVE TWEAKS ──────────────────────────────────── */
+
+@media (max-width: 480px) {
+    .btn-lg {
+        height: 40px;
+        font-size: 13px;
+        padding: 0 16px;
+    }
+    .btn-md {
+        height: 36px;
+        font-size: 12px;
+        padding: 0 14px;
+    }
+    .btn-sm {
+        height: 28px;
+        font-size: 11px;
+        padding: 0 10px;
+    }
+}

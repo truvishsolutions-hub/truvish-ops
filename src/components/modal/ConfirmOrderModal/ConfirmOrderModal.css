@@ -1,0 +1,184 @@
+/* =========================================================
+   ConfirmOrderModal – Modal for confirming order download
+   Matches the HTML design exactly.
+========================================================= */
+
+.com-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 44, 51, 0.45);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: com-fade-in 0.2s ease;
+}
+
+@keyframes com-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.com-modal {
+    background: #ffffff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 440px;
+    padding: 22px 22px 18px;
+    box-shadow: 0 10px 40px rgba(13, 44, 51, 0.2);
+    animation: com-slide-up 0.25s ease;
+    box-sizing: border-box;
+}
+
+@keyframes com-slide-up {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.com-modal h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #172a2d;
+    margin: 0 0 4px;
+}
+
+.com-modal-sub {
+    font-size: 12px;
+    color: #66777a;
+    margin: 0 0 16px;
+}
+
+/* ─── INFO BOX ────────────────────────────────────────────── */
+
+.com-modal-info {
+    padding: 10px 12px;
+    background: #f9fafb;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #66777a;
+    margin-bottom: 6px;
+}
+
+.com-modal-info div {
+    padding: 2px 0;
+}
+
+.com-modal-info b {
+    color: #172a2d;
+}
+
+/* ─── SUMMARY BOX ─────────────────────────────────────────── */
+
+.com-summary-box {
+    margin: 12px 0;
+    padding: 12px;
+    background: #eef7f6;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.com-summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+    color: #172a2d;
+}
+
+.com-summary-row b {
+    font-weight: 600;
+}
+
+.com-summary-total {
+    font-weight: 700;
+    font-size: 14px;
+    padding-top: 6px;
+    margin-top: 6px;
+    border-top: 1px solid #b9e6dd;
+    color: #0d8c7e;
+}
+
+.com-summary-total b {
+    color: #0d8c7e;
+}
+
+/* ─── ACTIONS ──────────────────────────────────────────────── */
+
+.com-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.com-btn-cancel {
+    padding: 9px 16px;
+    border: 1.5px solid #d1d5db;
+    background: #ffffff;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 13px;
+    color: #172a2d;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.com-btn-cancel:hover {
+    background: #f9fafb;
+    border-color: #bdc3c7;
+}
+
+.com-btn-primary {
+    padding: 9px 18px;
+    background: #11b6a3;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+}
+
+.com-btn-primary:hover {
+    background: #0d8c7e;
+}
+
+/* ─── RESPONSIVE ──────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    .com-modal {
+        max-width: 94%;
+        padding: 18px 16px 14px;
+        border-radius: 10px;
+    }
+    .com-modal h3 {
+        font-size: 15px;
+    }
+    .com-modal-actions {
+        flex-direction: column-reverse;
+        gap: 6px;
+    }
+    .com-btn-primary,
+    .com-btn-cancel {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        padding: 10px;
+    }
+    .com-summary-total {
+        font-size: 13px;
+    }
+}

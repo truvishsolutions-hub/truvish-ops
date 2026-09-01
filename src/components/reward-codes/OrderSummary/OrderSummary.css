@@ -1,0 +1,394 @@
+/* =========================================================
+   OrderSummary — Sticky right panel
+   Matches the HTML design exactly.
+========================================================= */
+
+.os-summary {
+    position: sticky;
+    top: 80px;
+    background: #ffffff;
+    border: 1px solid var(--border, #e2e8e8);
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(13, 44, 51, 0.04), 0 0 0 1px rgba(226, 232, 232, 0.6);
+    padding: 18px 18px 16px;
+}
+
+.os-summary h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #172a2d;
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border, #e2e8e8);
+}
+
+.os-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #66777a;
+    padding: 6px 0;
+}
+
+.os-row b {
+    color: #172a2d;
+    font-weight: 600;
+}
+
+.os-divider {
+    height: 1px;
+    background: var(--border, #e2e8e8);
+    margin: 6px -18px;
+}
+
+.os-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: #172a2d;
+    padding: 10px 0 4px;
+}
+
+.os-total-val {
+    color: #0d8c7e;
+    font-size: 18px;
+}
+
+/* ─── BALANCE BOX ─────────────────────────────────────────── */
+
+.os-balance-box {
+    margin-top: 10px;
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.os-balance-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    color: #66777a;
+}
+
+.os-balance-row b {
+    color: #172a2d;
+    font-weight: 600;
+}
+
+.os-balance-after {
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border, #e2e8e8);
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    color: #0d8c7e;
+    font-size: 14px;
+}
+
+/* ─── BUTTONS ─────────────────────────────────────────────── */
+
+.os-btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 44px;
+    background: #11b6a3;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 14px;
+    transition: background 0.15s;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.os-btn-primary:hover:not(:disabled) {
+    background: #0d8c7e;
+}
+
+.os-btn-primary:disabled {
+    background: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.os-btn-primary svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+
+.os-btn-sm {
+    height: 36px;
+    margin: 0;
+    width: auto;
+    padding: 0 16px;
+}
+
+/* ─── DANGER / WARNING ROWS ──────────────────────────────── */
+
+.os-danger-row {
+    margin-top: 12px;
+    padding: 10px;
+    background: #fdecec;
+    border: 1px solid #f5c2c2;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #b23838;
+    font-weight: 600;
+}
+
+.os-danger-row small {
+    display: block;
+    font-weight: 400;
+    color: #7a2828;
+    margin-top: 4px;
+    font-size: 10px;
+}
+
+.os-warn-row {
+    margin-top: 12px;
+    padding: 8px 10px;
+    background: #fef7e6;
+    border: 1px solid #f5d57a;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #8a5a00;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.os-warn-row svg {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+
+/* ─── MODAL ────────────────────────────────────────────────── */
+
+.os-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 44, 51, 0.45);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.os-modal {
+    background: #ffffff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 440px;
+    padding: 22px 22px 18px;
+    box-shadow: 0 10px 40px rgba(13, 44, 51, 0.2);
+}
+
+.os-modal h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #172a2d;
+    margin: 0 0 4px;
+}
+
+.os-modal-sub {
+    font-size: 12px;
+    color: #66777a;
+    margin: 0 0 16px;
+}
+
+.os-modal-info {
+    padding: 10px 12px;
+    background: #f9fafb;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #66777a;
+    margin-bottom: 6px;
+}
+
+.os-modal-info div {
+    padding: 2px 0;
+}
+
+.os-modal-info b {
+    color: #172a2d;
+}
+
+.os-modal label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #172a2d;
+    margin: 10px 0 4px;
+}
+
+.os-modal input,
+.os-modal textarea {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 9px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #172a2d;
+    background: #ffffff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.os-modal input:focus,
+.os-modal textarea:focus {
+    outline: none;
+    border-color: #11b6a3;
+    box-shadow: 0 0 0 3px rgba(17, 182, 163, 0.15);
+}
+
+.os-modal textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.os-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.os-btn-cancel {
+    padding: 9px 16px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 13px;
+    color: #172a2d;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+}
+
+.os-btn-cancel:hover {
+    background: #f9fafb;
+}
+
+.os-summary-box {
+    margin: 12px 0;
+    padding: 12px;
+    background: #eef7f6;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.os-summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+    color: #172a2d;
+}
+
+.os-summary-row b {
+    font-weight: 600;
+}
+
+.os-summary-total {
+    font-weight: 700;
+    font-size: 14px;
+    padding-top: 6px;
+    margin-top: 6px;
+    border-top: 1px solid #b9e6dd;
+    color: #0d8c7e;
+}
+
+.os-summary-total b {
+    color: #0d8c7e;
+}
+
+/* ─── RESPONSIVE ──────────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+    .os-summary {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .os-summary {
+        padding: 14px 14px 12px;
+    }
+
+    .os-total-val {
+        font-size: 16px;
+    }
+
+    .os-modal {
+        max-width: 94%;
+        padding: 18px 16px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .os-summary {
+        padding: 12px 12px 10px;
+        border-radius: 10px;
+    }
+
+    .os-summary h3 {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .os-row {
+        font-size: 11px;
+        padding: 4px 0;
+    }
+
+    .os-total {
+        font-size: 12px;
+        padding: 8px 0 2px;
+    }
+
+    .os-total-val {
+        font-size: 15px;
+    }
+
+    .os-balance-box {
+        padding: 10px;
+        font-size: 11px;
+    }
+
+    .os-balance-after {
+        font-size: 12px;
+    }
+
+    .os-btn-primary {
+        height: 40px;
+        font-size: 13px;
+        margin-top: 12px;
+    }
+
+    .os-btn-sm {
+        height: 32px;
+        font-size: 12px;
+        padding: 0 12px;
+    }
+
+    .os-modal {
+        padding: 16px 14px 12px;
+    }
+}
