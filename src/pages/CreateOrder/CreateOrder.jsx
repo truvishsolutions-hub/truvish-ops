@@ -13,6 +13,9 @@ import ConfirmOrderModal from "../../components/modal/ConfirmOrderModal/ConfirmO
 
 import "./CreateOrder.css";
 
+// ─── Vite environment variable ─────────────────────────────
+const API_BASE = import.meta.env.VITE_API_BASE || "http://api.truvish.com";
+
 // ─── Helpers ────────────────────────────────────────────────
 
 const parseValidityToMonths = (validityStr) => {
@@ -73,7 +76,6 @@ const CreateOrder = () => {
     const [validity, setValidity] = useState("90 Days");
 
     // ─── BALANCE ────────────────────────────────────────────
-    // ✅ Hardcoded 425000 HATAYA – ab 0 se start
     const [balance, setBalance] = useState(0);
 
     // ─── MODALS ─────────────────────────────────────────────
@@ -96,7 +98,7 @@ const CreateOrder = () => {
         const loadClients = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await fetch("http:api.truvish.com/api/clients", {
+                const response = await fetch(`${API_BASE}/api/clients`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -127,7 +129,7 @@ const CreateOrder = () => {
     const refreshClient = async (clientId) => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`http://api.truvish.com/api/clients/${clientId}`, {
+            const response = await fetch(`${API_BASE}/api/clients/${clientId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -142,7 +144,6 @@ const CreateOrder = () => {
             const updatedClient = await response.json();
             setSelectedClient(updatedClient);
 
-            // ✅ Balance directly from updated client
             const newBalance = Number(updatedClient?.balance ?? 0);
             setBalance(Number.isFinite(newBalance) ? newBalance : 0);
 
@@ -176,7 +177,7 @@ const CreateOrder = () => {
                 referenceId: `MANUAL-${Date.now()}`,
             };
 
-            const response = await fetch(`http://api.truvish.com/api/wallet/${clientId}/transactions`, {
+            const response = await fetch(`${API_BASE}/api/wallet/${clientId}/transactions`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -298,7 +299,7 @@ const CreateOrder = () => {
 
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch("http://api.truvish.com/api/truvish/generate-order", {
+            const response = await fetch(`${API_BASE}/api/truvish/generate-order`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -314,10 +315,8 @@ const CreateOrder = () => {
 
             const generatedCodes = await response.json();
 
-            // ✅ Refresh client balance
             await refreshClient(clientId);
 
-            // ✅ Download CSV
             downloadCSV(generatedCodes);
 
             showToast(`✅ ${generatedCodes.length} codes generated & downloaded!`, "success");
@@ -425,7 +424,7 @@ const CreateOrder = () => {
                         validity={validity}
                         theme={theme}
                         themeName={themeName}
-                        balance={balance}             // ✅ Dynamic balance from client
+                        balance={balance}
                         onDownloadClick={openConfirmModal}
                     />
                 </aside>
