@@ -1,17 +1,5 @@
 import React, { useEffect, useState } from "react";
-
-import Navbar from "../../components/layout/Navbar/Navbar.jsx";
-import SelectedClient from "../../components/client/SelectedClient/SelectedClient.jsx";
-import PageHeader from "../../components/reward-codes/PageHeader/PageHeader.jsx";
-import OrderStepper from "../../components/reward-codes/OrderStepper/OrderStepper.jsx";
-import CreatedRewardCodes from "../../components/reward-codes/CreatedRewardCodes/CreatedRewardCodes.jsx";
-import Validity from "../../components/reward-codes/Validity/Validity.jsx";
-import ServiceFee from "../../components/reward-codes/ServiceFee/ServiceFee.jsx";
-import Theme from "../../components/reward-codes/Theme/Theme.jsx";
-import OrderSummary from "../../components/reward-codes/OrderSummary/OrderSummary.jsx";
-import ConfirmOrderModal from "../../components/modal/ConfirmOrderModal/ConfirmOrderModal.jsx";
-
-import "./CreateOrder.css";
+import "./Theme.css";
 
 // ─── API Base URL ────────────────────────────────────────────
 // Production API must always use HTTPS.
@@ -19,748 +7,270 @@ const API_BASE = (
     import.meta.env.VITE_API_BASE || "https://api.truvish.com"
 ).replace(/\/+$/, "");
 
-// ─── Helpers ────────────────────────────────────────────────
+const Theme = ({ value = null, onChange }) => {
 
-const parseValidityToMonths = (validityStr) => {
-    if (!validityStr) return 3;
+    const [themes, setThemes] = useState([]);
+    const [selectedTheme, setSelectedTheme] = useState(value?.id || "");
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-    const lower = validityStr.toLowerCase();
-
-    if (lower.includes("year")) {
-        return 12;
-    }
-
-    if (lower.includes("month")) {
-        const num = parseInt(lower);
-        return isNaN(num) ? 3 : num;
-    }
-
-    const days = parseInt(lower);
-
-    if (!isNaN(days)) {
-        return Math.round(days / 30);
-    }
-
-    return 3;
-};
-
-const downloadCSV = (codes) => {
-    if (!codes || codes.length === 0) return;
-
-    let csv =
-        "Code,Denomination (₹),Validity (Months),Theme,Issued Date\n";
-
-    codes.forEach((code) => {
-        const date = code.truvishCodeTimestamp
-            ? new Date(
-                  code.truvishCodeTimestamp
-              ).toLocaleDateString("en-IN")
-            : "";
-
-        csv += `${code.truvishIdCodeNumber},${code.originalCodeValue},${code.validity},${code.clientTheme || ""},${date}\n`;
-    });
-
-    const blob = new Blob([csv], {
-        type: "text/csv;charset=utf-8;",
-    });
-
-    const link = document.createElement("a");
-
-    link.href = URL.createObjectURL(blob);
-
-    link.download = `vouchers_${new Date()
-        .toISOString()
-        .slice(0, 10)}.csv`;
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-
-    URL.revokeObjectURL(link.href);
-};
-
-// ─── Main Component ─────────────────────────────────────────
-
-const CreateOrder = () => {
-
-    // ─── CLIENTS ────────────────────────────────────────────
-    const [clients, setClients] = useState([]);
-    const [selectedClient, setSelectedClient] = useState(null);
-    const [searchValue, setSearchValue] = useState("");
-
-    // ─── THEME ──────────────────────────────────────────────
-    const [theme, setTheme] = useState(null);
-
-    // ─── REWARD CODE ROWS ──────────────────────────────────
-    const [rows, setRows] = useState([
-        {
-            id: 1,
-            denom: 0,
-            qty: 0,
-        },
-        {
-            id: 2,
-            denom: 0,
-            qty: 0,
-        },
-        {
-            id: 3,
-            denom: 0,
-            qty: 0,
-        },
-    ]);
-
-    // ─── ORDER SETTINGS ────────────────────────────────────
-    const [feePercent, setFeePercent] = useState(10);
-    const [validity, setValidity] = useState("90 Days");
-
-    // ─── BALANCE ────────────────────────────────────────────
-    const [balance, setBalance] = useState(0);
-
-    // ─── MODALS ─────────────────────────────────────────────
-    const [showConfirm, setShowConfirm] = useState(false);
-
-    // ─── TOAST ──────────────────────────────────────────────
-    const [toast, setToast] = useState({
-        visible: false,
-        message: "",
-        type: "success",
-    });
-
-    const showToast = (message, type = "success") => {
-        setToast({
-            visible: true,
-            message,
-            type,
-        });
-
-        setTimeout(() => {
-            setToast({
-                visible: false,
-                message: "",
-                type: "success",
-            });
-        }, 4000);
-    };
-
-    // ─── LOAD CLIENTS ──────────────────────────────────────
     useEffect(() => {
-        const loadClients = async () => {
+        const loadThemes = async () => {
             try {
-                const token =
-                    localStorage.getItem("token");
+                setLoading(true);
+                setError("");
 
-                const response = await fetch(
-                    `${API_BASE}/api/clients`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type":
-                                "application/json",
+                const token = localStorage.getItem("token");
 
-                            ...(token
-                                ? {
-                                      Authorization: `Bearer ${token}`,
-                                  }
-                                : {}),
-                        },
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error(
-                        `Failed to load clients: ${response.status}`
-                    );
-                }
-
-                const data = await response.json();
-
-                if (Array.isArray(data)) {
-                    setClients(data);
-                } else if (
-                    Array.isArray(data.content)
-                ) {
-                    setClients(data.content);
-                } else if (
-                    Array.isArray(data.clients)
-                ) {
-                    setClients(data.clients);
-                } else if (
-                    Array.isArray(data.data)
-                ) {
-                    setClients(data.data);
-                } else {
-                    setClients([]);
-                }
-
-            } catch (error) {
-                console.error(
-                    "Client loading error:",
-                    error
-                );
-
-                setClients([]);
-            }
-        };
-
-        loadClients();
-    }, []);
-
-    // ─── REFRESH CLIENT ────────────────────────────────────
-    const refreshClient = async (clientId) => {
-        try {
-            const token =
-                localStorage.getItem("token");
-
-            const response = await fetch(
-                `${API_BASE}/api/clients/${clientId}`,
-                {
+                const response = await fetch(`${API_BASE}/api/admin/config`, {
                     method: "GET",
                     headers: {
-                        "Content-Type":
-                            "application/json",
-
+                        "Content-Type": "application/json",
                         ...(token
-                            ? {
-                                  Authorization: `Bearer ${token}`,
-                              }
+                            ? { Authorization: `Bearer ${token}` }
                             : {}),
                     },
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error(
-                    `Failed to refresh client: ${response.status}`
-                );
-            }
-
-            const updatedClient =
-                await response.json();
-
-            setSelectedClient(updatedClient);
-
-            const newBalance = Number(
-                updatedClient?.balance ?? 0
-            );
-
-            setBalance(
-                Number.isFinite(newBalance)
-                    ? newBalance
-                    : 0
-            );
-
-        } catch (error) {
-            console.error(
-                "Refresh client error:",
-                error
-            );
-
-            showToast(
-                "Failed to refresh client balance",
-                "error"
-            );
-        }
-    };
-
-    // ─── ADD FUNDS ─────────────────────────────────────────
-    const handleAddFunds = async (
-        client,
-        amount,
-        reference
-    ) => {
-        const clientId =
-            client?.id ||
-            client?.clientId;
-
-        if (!clientId) {
-            showToast(
-                "No client selected",
-                "error"
-            );
-            return;
-        }
-
-        const numAmount = Number(amount);
-
-        if (!numAmount || numAmount <= 0) {
-            showToast(
-                "Please enter a valid amount",
-                "error"
-            );
-            return;
-        }
-
-        try {
-            const token =
-                localStorage.getItem("token");
-
-            const payload = {
-                amount: numAmount,
-                type: "CREDIT",
-                description: "Tru balance Cr.",
-                referenceType: "MANUAL",
-                referenceId: `MANUAL-${Date.now()}`,
-            };
-
-            const response = await fetch(
-                `${API_BASE}/api/wallet/${clientId}/transactions`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type":
-                            "application/json",
-
-                        ...(token
-                            ? {
-                                  Authorization: `Bearer ${token}`,
-                              }
-                            : {}),
-                    },
-                    body: JSON.stringify(payload),
-                }
-            );
-
-            if (!response.ok) {
-                const errorData =
-                    await response
-                        .json()
-                        .catch(() => ({}));
-
-                throw new Error(
-                    errorData.message ||
-                        `Server error: ${response.status}`
-                );
-            }
-
-            await refreshClient(clientId);
-
-            showToast(
-                `✅ Tru balance Cr. ₹${numAmount}`,
-                "success"
-            );
-
-        } catch (error) {
-            console.error(
-                "Add funds error:",
-                error
-            );
-
-            showToast(
-                error.message ||
-                    "Failed to add funds",
-                "error"
-            );
-        }
-    };
-
-    // ─── SELECT CLIENT ─────────────────────────────────────
-    const handleClientSelect = (client) => {
-        setSelectedClient(client);
-        setSearchValue("");
-        setTheme(null);
-    };
-
-    // ─── UPDATE BALANCE ON CLIENT CHANGE ────────────────
-    useEffect(() => {
-        if (!selectedClient) {
-            setBalance(0);
-            return;
-        }
-
-        const clientBalance = Number(
-            selectedClient?.balance ??
-                selectedClient?.truBalance ??
-                selectedClient?.walletBalance ??
-                0
-        );
-
-        setBalance(
-            Number.isFinite(clientBalance)
-                ? clientBalance
-                : 0
-        );
-    }, [selectedClient]);
-
-    // ─── ROW CHANGE ────────────────────────────────────────
-    const handleRowsChange = (newRows) => {
-        setRows(
-            Array.isArray(newRows)
-                ? newRows
-                : []
-        );
-    };
-
-    // ─── FEE CHANGE ────────────────────────────────────────
-    const handleFeeChange = (pct) => {
-        setFeePercent(
-            Number(pct) || 0
-        );
-    };
-
-    // ─── VALIDITY CHANGE ───────────────────────────────────
-    const handleValidityChange = (value) => {
-        setValidity(value || "");
-    };
-
-    // ─── THEME CHANGE ──────────────────────────────────────
-    const handleThemeChange = (
-        selectedTheme
-    ) => {
-        if (!selectedTheme) {
-            setTheme(null);
-            return;
-        }
-
-        setTheme({
-            id: selectedTheme.id ?? null,
-            name: selectedTheme.name ?? "",
-            image: selectedTheme.image ?? "",
-            raw:
-                selectedTheme.raw ??
-                selectedTheme,
-        });
-    };
-
-    // ─── TOTALS ────────────────────────────────────────────
-    const totals = rows.reduce(
-        (acc, row) => {
-            const denom =
-                Number(row?.denom) || 0;
-
-            const qty =
-                Number(row?.qty) || 0;
-
-            const value =
-                denom * qty;
-
-            return {
-                qty:
-                    acc.qty + qty,
-
-                reward:
-                    acc.reward + value,
-            };
-        },
-        {
-            qty: 0,
-            reward: 0,
-        }
-    );
-
-    const fee =
-        totals.reward *
-        (Number(feePercent) / 100);
-
-    const totalValue =
-        totals.reward + fee;
-
-    // ─── CONFIRM DOWNLOAD ────────────────────────────────
-    const handleConfirmDownload =
-        async () => {
-
-            setShowConfirm(false);
-
-            const clientId =
-                selectedClient?.id ||
-                selectedClient?.clientId;
-
-            if (!clientId) {
-                showToast(
-                    "Client ID not found",
-                    "error"
-                );
-                return;
-            }
-
-            const payload = {
-                clientId: clientId,
-
-                themeName:
-                    theme?.name || "",
-
-                themeImg:
-                    theme?.image || "",
-
-                validityMonths:
-                    parseValidityToMonths(
-                        validity
-                    ),
-
-                items: rows
-                    .filter(
-                        (row) =>
-                            Number(row.denom) > 0 &&
-                            Number(row.qty) > 0
-                    )
-                    .map((row) => ({
-                        denomination:
-                            Number(row.denom),
-
-                        quantity:
-                            Number(row.qty),
-                    })),
-            };
-
-            if (
-                payload.items.length === 0
-            ) {
-                showToast(
-                    "Please add at least one valid denomination and quantity.",
-                    "error"
-                );
-                return;
-            }
-
-            try {
-                const token =
-                    localStorage.getItem(
-                        "token"
-                    );
-
-                const response = await fetch(
-                    `${API_BASE}/api/truvish/generate-order`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type":
-                                "application/json",
-
-                            ...(token
-                                ? {
-                                      Authorization: `Bearer ${token}`,
-                                  }
-                                : {}),
-                        },
-
-                        body: JSON.stringify(
-                            payload
-                        ),
-                    }
-                );
+                });
 
                 if (!response.ok) {
-                    const errorData =
-                        await response
-                            .json()
-                            .catch(
-                                () => ({})
-                            );
-
                     throw new Error(
-                        errorData.error ||
-                            errorData.message ||
-                            "Failed to generate codes"
+                        `Failed to load admin config: ${response.status}`
                     );
                 }
 
-                const generatedCodes =
-                    await response.json();
+                const config = await response.json();
 
-                await refreshClient(
-                    clientId
+                const themeList = [];
+
+                const imageSlots = [
+                    1, 2, 3, 4,
+                    6, 7, 8, 9,
+                    11, 12, 13, 14,
+                    16, 17, 18, 19
+                ];
+
+                imageSlots.forEach((slot) => {
+                    const image = config[`img${slot}`];
+                    const name = config[`img${slot}Name`];
+
+                    if (
+                        image &&
+                        String(image).trim() !== "" &&
+                        name &&
+                        String(name).trim() !== ""
+                    ) {
+                        themeList.push({
+                            id: String(slot),
+                            name: String(name).trim(),
+                            image: image,
+                            raw: {
+                                slot,
+                                image,
+                                name,
+                            },
+                        });
+                    }
+                });
+
+                setThemes(themeList);
+
+                if (value?.id) {
+                    const existingTheme = themeList.find(
+                        (item) =>
+                            String(item.id) === String(value.id)
+                    );
+
+                    if (existingTheme) {
+                        setSelectedTheme(existingTheme.id);
+                    }
+                }
+
+            } catch (err) {
+                console.error("Theme loading error:", err);
+
+                setThemes([]);
+                setError(
+                    err?.message || "Unable to load themes"
                 );
 
-                downloadCSV(
-                    generatedCodes
-                );
-
-                showToast(
-                    `✅ ${generatedCodes.length} codes generated & downloaded!`,
-                    "success"
-                );
-
-            } catch (error) {
-                console.error(
-                    "Generate order error:",
-                    error
-                );
-
-                showToast(
-                    error.message ||
-                        "Failed to generate codes",
-                    "error"
-                );
+            } finally {
+                setLoading(false);
             }
         };
 
-    // ─── OPEN CONFIRM MODAL ────────────────────────────────
-    const openConfirmModal = () => {
-        if (!selectedClient) {
-            alert(
-                "Please select a client first."
+        loadThemes();
+    }, []);
+
+    useEffect(() => {
+        if (!value) {
+            setSelectedTheme("");
+            return;
+        }
+
+        if (value.id) {
+            setSelectedTheme(String(value.id));
+        }
+    }, [value]);
+
+    const handleThemeChange = (event) => {
+        const selectedId = event.target.value;
+
+        setSelectedTheme(selectedId);
+
+        if (!selectedId) {
+            if (onChange) {
+                onChange(null);
+            }
+            return;
+        }
+
+        const selected = themes.find(
+            (theme) =>
+                String(theme.id) === String(selectedId)
+        );
+
+        if (!selected) {
+            console.warn(
+                "Selected theme not found:",
+                selectedId
             );
             return;
         }
 
-        if (!rows.length) {
-            alert(
-                "Please add at least one denomination."
-            );
-            return;
+        if (onChange) {
+            onChange({
+                id: selected.id,
+                name: selected.name,
+                image: selected.image,
+                raw: selected.raw,
+            });
         }
-
-        if (totals.qty <= 0) {
-            alert(
-                "Please enter a valid quantity."
-            );
-            return;
-        }
-
-        if (totals.reward <= 0) {
-            alert(
-                "Please enter a valid denomination."
-            );
-            return;
-        }
-
-        if (!theme?.name) {
-            alert(
-                "Please select a theme."
-            );
-            return;
-        }
-
-        if (!theme?.image) {
-            alert(
-                "Selected theme does not have an image."
-            );
-            return;
-        }
-
-        setShowConfirm(true);
     };
 
-    // ─── CLIENT NAME & ID ────────────────────────────────
-    const clientName =
-        selectedClient?.companyName ||
-        selectedClient?.company_name ||
-        selectedClient?.clientName ||
-        selectedClient?.client_name ||
-        "Select Client";
+    const getImageUrl = (image) => {
+        if (!image) {
+            return "";
+        }
 
-    const clientId =
-        selectedClient?.clientId ||
-        selectedClient?.client_id ||
-        selectedClient?.id ||
-        "-";
+        const imageString = String(image).trim();
 
-    const themeName =
-        theme?.name || "";
+        // Already an absolute URL
+        if (
+            imageString.startsWith("http://") ||
+            imageString.startsWith("https://")
+        ) {
+            return imageString;
+        }
 
-    // ─── RENDER ───────────────────────────────────────────
+        // Relative path
+        if (imageString.startsWith("/")) {
+            return `${API_BASE}${imageString}`;
+        }
+
+        return `${API_BASE}/${imageString}`;
+    };
+
     return (
-        <div className="create-order">
+        <div className="t-mini-card">
 
-            <Navbar
-                searchValue={
-                    searchValue
-                }
-                onSearchChange={
-                    setSearchValue
-                }
-                clients={clients}
-                selectedClient={
-                    selectedClient
-                }
-                onClientSelect={
-                    handleClientSelect
-                }
-            />
+            <h3>
+                <span className="t-num-mini">5</span>
+                Theme
+                <span className="t-req">*</span>
+            </h3>
 
-            <SelectedClient
-                client={
-                    selectedClient || {}
-                }
-                onViewDetails={(
-                    client
-                ) =>
-                    console.log(
-                        "VIEW CLIENT:",
-                        client
-                    )
-                }
-                onAddFunds={
-                    handleAddFunds
-                }
-            />
+            <label>Select Theme</label>
 
-            <PageHeader />
+            {loading && (
+                <div className="t-theme-status">
+                    Loading themes...
+                </div>
+            )}
 
-            <OrderStepper />
+            {!loading && error && (
+                <div className="t-theme-status t-theme-error">
+                    {error}
+                </div>
+            )}
 
-            <div className="reward-order-layout">
-
-                <section className="reward-order-left">
-
-                    <CreatedRewardCodes
-                        rows={rows}
-                        onRowsChange={
-                            handleRowsChange
-                        }
-                    />
-
-                    <div className="trio">
-
-                        <Validity
-                            value={validity}
-                            onChange={
-                                handleValidityChange
-                            }
-                        />
-
-                        <ServiceFee
-                            value={
-                                feePercent
-                            }
-                            onChange={
-                                handleFeeChange
-                            }
-                            rewardValue={
-                                totals.reward
-                            }
-                        />
-
-                        <Theme
-                            value={theme}
-                            onChange={
-                                handleThemeChange
-                            }
-                        />
-
+            {!loading &&
+                !error &&
+                themes.length === 0 && (
+                    <div className="t-theme-status t-theme-error">
+                        No themes available.
                     </div>
+                )}
 
-                </section>
+            {!loading &&
+                !error &&
+                themes.length > 0 && (
+                    <select
+                        value={selectedTheme}
+                        onChange={handleThemeChange}
+                    >
+                        <option value="">
+                            Select Theme
+                        </option>
 
-                <aside className="reward-order-right">
+                        {themes.map((theme) => (
+                            <option
+                                key={theme.id}
+                                value={theme.id}
+                            >
+                                {theme.name}
+                            </option>
+                        ))}
+                    </select>
+                )}
 
-                    <OrderSummary
-                        rows={rows}
-                        feePercent={
-                            feePercent
-                        }
-                        validity={
-                            validity
-                        }
-                        theme={theme}
-                        themeName={
-                            themeName
-                        }
-                        balance={
-                            balance
-                        }
-                        onDownloadClick={
-                            openConfirmModal
-                        }
-                    />
+            {!loading &&
+                selectedTheme &&
+                themes.length > 0 &&
+                (() => {
+                    const selected = themes.find(
+                        (item) =>
+                            String(item.id) ===
+                            String(selectedTheme)
+                    );
 
-                </aside>
+                    if (!selected) {
+                        return null;
+                    }
 
-            </div>
+                    return (
+                        <div className="t-theme-preview">
 
-            <div className="footer-note">
+                            <img
+                                src={getImageUrl(
+                                    selected.image
+                                )}
+                                alt={selected.name}
+                                onError={(e) => {
+                                    console.warn(
+                                        "Theme image failed:",
+                                        selected.image
+                                    );
+
+                                    e.currentTarget.style.display =
+                                        "none";
+                                }}
+                            />
+
+                            <div className="t-theme-preview-text">
+                                <strong>
+                                    {selected.name}
+                                </strong>
+
+                                <span>
+                                    Selected theme
+                                </span>
+                            </div>
+
+                        </div>
+                    );
+                })()}
+
+            <div className="t-theme-info">
 
                 <svg
                     viewBox="0 0 24 24"
@@ -790,72 +300,13 @@ const CreateOrder = () => {
                 </svg>
 
                 <span>
-                    Please review all details before downloading codes. Once downloaded, codes cannot be edited.
+                    Theme will be applied to all codes in this order.
                 </span>
 
             </div>
-
-            <ConfirmOrderModal
-                isOpen={showConfirm}
-                onClose={() =>
-                    setShowConfirm(false)
-                }
-                onConfirm={
-                    handleConfirmDownload
-                }
-                clientName={
-                    clientName
-                }
-                clientId={
-                    clientId
-                }
-                theme={
-                    themeName
-                }
-                totalQty={
-                    totals.qty
-                }
-                rewardValue={
-                    totals.reward
-                }
-                fee={
-                    fee
-                }
-                totalValue={
-                    totalValue
-                }
-            />
-
-            {toast.visible && (
-                <div
-                    style={{
-                        position: "fixed",
-                        bottom: "24px",
-                        right: "24px",
-                        padding: "14px 22px",
-                        borderRadius: "10px",
-                        backgroundColor:
-                            toast.type ===
-                            "success"
-                                ? "#11b6a3"
-                                : "#e45b5b",
-                        color: "#fff",
-                        fontWeight: "600",
-                        fontSize: "14px",
-                        boxShadow:
-                            "0 6px 20px rgba(0,0,0,0.15)",
-                        zIndex: 9999,
-                        maxWidth: "400px",
-                        animation:
-                            "fadeIn 0.3s ease",
-                    }}
-                >
-                    {toast.message}
-                </div>
-            )}
 
         </div>
     );
 };
 
-export default CreateOrder;
+export default Theme;
